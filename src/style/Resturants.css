@@ -1,0 +1,52 @@
+/* Resturants.css */
+
+.restaurants-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    font-family: Arial, sans-serif;
+  }
+  
+  h2 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .restaurants-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .restaurant-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .restaurant-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .restaurant-card h3 {
+    margin: 0 0 10px;
+    color: #444;
+  }
+  
+  .restaurant-card p {
+    margin: 5px 0;
+    color: #666;
+    font-size: 14px;
+  }
+  
+  .loading,
+  .error {
+    text-align: center;
+    font-size: 18px;
+    color: #555;
+    margin-top: 50px;
+  }
+  
