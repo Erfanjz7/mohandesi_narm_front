@@ -8,6 +8,7 @@ import CustomerDashboard from "./components/CustomerDashboard";
 import Foods from "./components/Foods";
 import FoodEdit from "./components/FoodEdit";
 import EmployeeList from "./components/EmployeeList";
+import AdminSignup from "./components/AdminSignup";
 const Welcome = () => {
   const navigate = useNavigate();
 
@@ -39,6 +40,7 @@ const App = () => {
       <Route path="/foods" element={<Foods />} />
       <Route path="/foods/food/edit/:foodid" element={<FoodEdit />} />
       <Route path="/admin/employees" element={EmployeeList}/>
+      <Route path="/admin/signup" element={<AdminSignup />} />
     </Routes>
   );
 };

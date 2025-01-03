@@ -27,7 +27,7 @@ const AdminDashboard = () => {
         <div className="section">
           <h3>Manage Users</h3>
           <Link to="/admin/employees">View Employees</Link>
-          <Link to="/signup">Add an Employee</Link>
+          <Link to="/admin/signup">Add an Employee</Link>
         </div>
 
       </div>

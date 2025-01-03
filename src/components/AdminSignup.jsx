@@ -3,7 +3,7 @@ import Axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../style/Signup.css";
 
-const Signup = () => {
+const AdminSignup = () => {
   const [userData, setUserData] = useState({
     username: "",
     password: "",
@@ -25,16 +25,13 @@ const Signup = () => {
 
     try {
       setLoading(true);
-
-      const endpoint = "http://127.0.0.1:8000/api/signup/";
+      const endpoint ="http://127.0.0.1:8000/api/admin/employee/register/"
 
       const response = await Axios.post(endpoint, userData);
 
       if (response.status === 201) {
         alert("Account created successfully!");
-        localStorage.removeItem("authToken"); // Remove auth token
-        localStorage.removeItem("userRole");  // Remove user role
-        navigate("/login");
+          navigate("/admin-dashboard");
       }
     } catch (error) {
       setError(
@@ -104,4 +101,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default AdminSignup;
