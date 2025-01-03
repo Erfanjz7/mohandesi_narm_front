@@ -47,14 +47,13 @@ const CustomerDashboard = () => {
         if (selectedCategory) {
           params.category = selectedCategory;
         }
-
+        console.log(typeof(selectedCategory.value))
         const response = await Axios.get("http://127.0.0.1:8000/api/foods/list/", {
           headers: {
             Authorization: `Token ${token}`,
           },
           params: params,
         });
-
         setFoods(response.data.data); // Update with fetched foods
         setLoading(false);
       } catch (err) {

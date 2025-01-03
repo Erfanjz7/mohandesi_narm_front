@@ -1,21 +1,38 @@
 import { useEffect, useState } from "react";
 import Axios from "axios";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../style/Foods.css";
 
 const Foods = () => {
   const [foods, setFoods] = useState([]);
+  const [categories, setCategories] = useState([]); // To store categories
+  const [selectedCategory, setSelectedCategory] = useState(""); // To store selected category
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [quantities, setQuantities] = useState({});  // Track quantity for each food
+  const [quantities, setQuantities] = useState({}); // Track quantity for each food
   const navigate = useNavigate();
 
   const isAdmin = localStorage.getItem("userRole") === "admin";
-  const isCustomer = localStorage.getItem("userRole") === "customer";  // Check if the user is a customer
+  const isCustomer = localStorage.getItem("userRole") === "customer"; // Check if the user is a customer
   const itemsPerPage = 10; // Limit items to 10 per page
 
+  // Fetch categories
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await Axios.get("http://127.0.0.1:8000/api/getcategories/");
+        setCategories(response.data); // Assuming the response contains an array of categories
+      } catch (err) {
+        setError("Failed to load categories.");
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  // Fetch foods based on selected category and pagination
   useEffect(() => {
     const fetchFoods = async () => {
       const token = localStorage.getItem("authToken");
@@ -30,18 +47,31 @@ const Foods = () => {
       setError(null);
 
       try {
-        const response = await Axios.get(`http://127.0.0.1:8000/api/foods/list/`, {
+        // Prepare the params with pagination and selected category
+        const params = {
+          page: currentPage,
+          page_size: itemsPerPage, // Set items per page
+        };
+
+        if (selectedCategory) {
+          params.category = selectedCategory; // Apply category filter
+        }
+
+        // Fetch foods
+        const response = await Axios.get("http://127.0.0.1:8000/api/foods/list/", {
           headers: {
             Authorization: `Token ${token}`,
           },
-          params: {
-            page: currentPage,
-            page_size: itemsPerPage, // Set items per page
-          },
+          params: params,
         });
 
-        setFoods(response.data.data); // Update with the `data` array
-        setTotalPages(response.data.total_pages); // Update total pages
+        console.log("ehe" , typeof(selectedCategory.value));
+        if (response.data && response.data.data) {
+          setFoods(response.data.data);
+          setTotalPages(response.data.total_pages);
+        } else {
+          setFoods([]); // No foods found
+        }
       } catch (err) {
         setError("Failed to load foods.");
       } finally {
@@ -50,7 +80,7 @@ const Foods = () => {
     };
 
     fetchFoods();
-  }, [currentPage]);
+  }, [currentPage, selectedCategory]); // Re-fetch foods when category or page changes
 
   const handleEdit = (foodId) => {
     if (isAdmin) {
@@ -70,47 +100,9 @@ const Foods = () => {
     }
   };
 
-  // Handle adding items to the cart for the customer
-  const handleAddToCart = (food) => {
-    const quantity = quantities[food.id] || 1;  // Get the quantity for the food item, default to 1 if not specified
-
-    // Send quantity and food id to the backend
-    const token = localStorage.getItem("authToken");
-
-    if (!token) {
-      alert("You must be logged in to add items to the cart.");
-      return;
-    }
-
-    const body = {
-      food: food.id,
-      quantity: quantity,
-    };
-
-    Axios.post(
-      "http://127.0.0.1:8000/api/food/add-to-cart/",  // Update with your cart add API endpoint
-      body,
-      {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      }
-    )
-      .then((response) => {
-        alert(`${food.name} (x${quantity}) added to cart!`);
-      })
-      .catch((err) => {
-        alert("Failed to add food to cart.");
-      });
-  };
-
-  // Handle quantity changes
-  const handleQuantityChange = (foodId, action) => {
-    setQuantities((prevQuantities) => {
-      const newQuantities = { ...prevQuantities };
-      newQuantities[foodId] = Math.max(1, (newQuantities[foodId] || 1) + action);
-      return newQuantities;
-    });
+  const handleCategoryChange = (e) => {
+    setSelectedCategory(e.target.value);
+    setCurrentPage(1); // Reset to first page when category changes
   };
 
   if (loading) return <div className="loading">Loading...</div>;
@@ -119,37 +111,61 @@ const Foods = () => {
   return (
     <div className="restaurant-foods-container">
       <h2>Foods</h2>
+
+      {/* Category Dropdown */}
+      <div className="category-filter">
+          <label htmlFor="category-select">Filter by Category:</label>
+          <select
+            id="category-select"
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+          >
+            <option value="">Select Category</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.name}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+      {/* Foods Display */}
       <div className="foods-row">
-        {foods.map((food) => (
-          <div className="food-card" key={food.id}>
-            <h3>{food.name}</h3>
-            <p><strong>Description:</strong> {food.description}</p>
-            <p><strong>Category ID:</strong> {food.category}</p>
-            <p className="price"><strong>Price:</strong> {food.price} IRR</p>
-            <div className="rate">
-              <strong>Rate:</strong>
-              <span>{food.rate} ★</span>
-            </div>
-            {isAdmin && (
-              <button onClick={() => handleEdit(food.id)}>
-                Edit Food
-              </button>
-            )}
-            {isCustomer && (
-              <div>
-                <div className="quantity-controls">
-                  <button onClick={() => handleQuantityChange(food.id, -1)}>-</button>
-                  <span>{quantities[food.id] || 1}</span>
-                  <button onClick={() => handleQuantityChange(food.id, 1)}>+</button>
-                </div>
-                <button onClick={() => handleAddToCart(food)}>
-                  Add to Cart
-                </button>
+        {foods.length === 0 ? (
+          <p>No foods available in this category.</p>
+        ) : (
+          foods.map((food) => (
+            <div className="food-card" key={food.id}>
+              <h3>{food.name}</h3>
+              <p><strong>Description:</strong> {food.description}</p>
+              <p><strong>Category ID:</strong> {food.category}</p>
+              <p className="price"><strong>Price:</strong> {food.price} IRR</p>
+              <div className="rate">
+                <strong>Rate:</strong>
+                <span>{food.rate} ★</span>
               </div>
-            )}
-          </div>
-        ))}
+              {isAdmin && (
+                <button onClick={() => handleEdit(food.id)}>
+                  Edit Food
+                </button>
+              )}
+              {isCustomer && (
+                <div>
+                  <div className="quantity-controls">
+                    <button onClick={() => handleQuantityChange(food.id, -1)}>-</button>
+                    <span>{quantities[food.id] || 1}</span>
+                    <button onClick={() => handleQuantityChange(food.id, 1)}>+</button>
+                  </div>
+                  <button onClick={() => handleAddToCart(food)}>
+                    Add to Cart
+                  </button>
+                </div>
+              )}
+            </div>
+          ))
+        )}
       </div>
+
       <div className="pagination-controls">
         <button
           onClick={handlePreviousPage}
