@@ -13,7 +13,19 @@ const Restaurant = () => {
   const isAdmin = localStorage.getItem("userRole") === "admin";  // Check if the user is an admin
 
   useEffect(() => {
-    Axios.get(`http://127.0.0.1:8000/api/foods/list/`)
+    const token = localStorage.getItem("authToken");
+  
+    if (!token) {
+      setError("Authorization token is missing. Please log in again.");
+      setLoading(false);
+      return;
+    }
+  
+    Axios.get(`http://127.0.0.1:8000/api/foods/list/`, {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    })
       .then((response) => {
         setFoods(response.data);
         setLoading(false);
@@ -23,6 +35,7 @@ const Restaurant = () => {
         setLoading(false);
       });
   }, []);
+  
 
   const handleEdit = (foodId) => {
     // Only navigate to edit page if the user is an admin

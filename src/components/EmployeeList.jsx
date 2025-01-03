@@ -11,13 +11,18 @@ const EmployeeList = () => {
   const isAdmin = localStorage.getItem("userRole") === "admin";
 
   useEffect(() => {
+    const token = localStorage.getItem("authToken");
     if (!isAdmin) {
       navigate("/login"); // Redirect to login if not an admin
       return;
     }
 
     // Fetch employees data
-    Axios.get("http://127.0.0.1:8000/api/admin/employees/")
+    Axios.get("http://127.0.0.1:8000/api/admin/employees/", {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    })
       .then((response) => {
         setEmployees(response.data);
         setLoading(false);
@@ -29,10 +34,19 @@ const EmployeeList = () => {
   }, [isAdmin, navigate]);
 
   const handleDelete = async (employeeId) => {
+    const token = localStorage.getItem("authToken");
+
     if (!window.confirm("Are you sure you want to delete this employee?")) return;
 
     try {
-      await Axios.delete(`http://127.0.0.1:8000/api/admin/employees/${employeeId}/`);
+      await Axios.delete(
+        `http://127.0.0.1:8000/api/admin/employees/${employeeId}/`,
+        {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        }
+      );
       alert("Employee deleted successfully");
       setEmployees((prev) => prev.filter((emp) => emp.id !== employeeId));
     } catch (err) {
@@ -49,27 +63,31 @@ const EmployeeList = () => {
       <table>
         <thead>
           <tr>
-            <th>ID</th>
             <th>Username</th>
-            <th>Email</th>
-            <th>First Name</th>
-            <th>Last Name</th>
+            <th>Password</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {employees.map((employee) => (
             <tr key={employee.id}>
-              <td>{employee.id}</td>
               <td>{employee.username}</td>
-              <td>{employee.email}</td>
-              <td>{employee.first_name}</td>
-              <td>{employee.last_name}</td>
+              <td>******</td> {/* Mask password */}
               <td>
-                <button onClick={() => navigate(`/admin/employees/edit/${employee.id}`)}>
+                <button
+                  onClick={() => navigate(`/admin/employees/edit/${employee.id}`, {
+                    state: { employee }, // Pass the employee data to the next page
+                  })}
+                  className="edit-button"
+                >
                   Edit
                 </button>
-                <button onClick={() => handleDelete(employee.id)}>Delete</button>
+                <button
+                  onClick={() => handleDelete(employee.id)} // Ensure employee.id is passed here
+                  className="delete-button"
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           ))}

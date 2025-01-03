@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import "../style/FoodEdit.css"; // Ensure this file is updated for styling
 
 const FoodEdit = () => {
-  const { foodid, id } = useParams(); // Get foodid and id from the URL params
+  const { foodid } = useParams(); // Get foodid from the URL params
   const navigate = useNavigate();
   const [food, setFood] = useState({
     name: "",
@@ -15,6 +15,7 @@ const FoodEdit = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const isAdmin = localStorage.getItem("userRole") === "admin"; // Check if the user is an admin
+  const token = localStorage.getItem("authToken");
 
   useEffect(() => {
     if (!isAdmin) {
@@ -23,16 +24,20 @@ const FoodEdit = () => {
     }
 
     // Fetch food details for editing
-    Axios.get(`http://127.0.0.1:8000/api/food/detail/${foodid}`) // Corrected URL to use id and foodid
+    Axios.get(`http://127.0.0.1:8000/api/food/detail/${foodid}/`, {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    })
       .then((response) => {
         setFood(response.data);
         setLoading(false);
       })
-      .catch((err) => {
+      .catch(() => {
         setError("Failed to load food details.");
         setLoading(false);
       });
-  }, [foodid, id, isAdmin, navigate]);
+  }, [foodid, isAdmin, navigate, token]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -45,7 +50,15 @@ const FoodEdit = () => {
   const handleSave = async (e) => {
     e.preventDefault();
     try {
-      await Axios.put(`http://127.0.0.1:8000/api/admin/food/${foodid}/edit/`, food);
+      await Axios.put(
+        `http://127.0.0.1:8000/api/admin/food/${foodid}/edit/`,
+        food,
+        {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        }
+      );
       alert("Food updated successfully");
       navigate(`/foods`); // Redirect back to restaurant foods page
     } catch (err) {
@@ -55,7 +68,11 @@ const FoodEdit = () => {
 
   const handleDelete = async () => {
     try {
-      await Axios.delete(`http://127.0.0.1:8000/api/admin/food/${foodid}/delete/`);
+      await Axios.delete(`http://127.0.0.1:8000/api/admin/food/${foodid}/delete/`, {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      });
       alert("Food deleted successfully");
       navigate(`/foods`); // Redirect back to restaurant foods page
     } catch (err) {

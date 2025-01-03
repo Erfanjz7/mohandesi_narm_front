@@ -25,13 +25,23 @@ const AdminSignup = () => {
 
     try {
       setLoading(true);
-      const endpoint ="http://127.0.0.1:8000/api/admin/employee/register/"
+      const endpoint = "http://127.0.0.1:8000/api/admin/employee/register/";
+      const token = localStorage.getItem("authToken");
 
-      const response = await Axios.post(endpoint, userData);
+      if (!token) {
+        setError("Authorization token is missing. Please log in again.");
+        return;
+      }
+
+      const response = await Axios.post(endpoint, userData, {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      });
 
       if (response.status === 201) {
         alert("Account created successfully!");
-          navigate("/admin-dashboard");
+        navigate("/admin-dashboard");
       }
     } catch (error) {
       setError(
