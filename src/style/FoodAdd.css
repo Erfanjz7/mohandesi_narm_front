@@ -1,0 +1,70 @@
+.food-add-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .food-add-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .food-add-container .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .food-add-container .form-group label {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 5px;
+  }
+  
+  .food-add-container .form-group input,
+  .food-add-container .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  .food-add-container .form-group input[type="number"] {
+    -moz-appearance: textfield;
+  }
+  
+  .food-add-container .form-group textarea {
+    min-height: 100px;
+  }
+  
+  .food-add-container button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .food-add-container button:hover {
+    background-color: #45a049;
+  }
+  
+  .food-add-container .error {
+    color: red;
+    font-size: 16px;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  

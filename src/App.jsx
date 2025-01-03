@@ -10,6 +10,9 @@ import FoodEdit from "./components/FoodEdit";
 import AdminSignup from "./components/AdminSignup";
 import EmployeeList from "./components/EmployeeList";
 import EmployeeEdit from "./components/EmployeeEdit";
+import PendingOrders from "./components/PendingOrders";
+import AcceptedOrders from "./components/AcceptedOrders";
+import FoodAdd from "./components/FoodAdd";
 const Welcome = () => {
   const navigate = useNavigate();
 
@@ -43,6 +46,9 @@ const App = () => {
       <Route path="/admin/employees" element={<EmployeeList />}/>
       <Route path="/admin/signup" element={<AdminSignup />} />
       <Route path="/admin/employees/edit/:employeeId" element={<EmployeeEdit />} />
+      <Route path="/employee/pending-orders" element={<PendingOrders />} />
+      <Route path="/employee/accepted-orders" element={<AcceptedOrders />} />
+      <Route path="/admin/foods/add" element={<FoodAdd />} />
     </Routes>
   );
 };

@@ -9,7 +9,15 @@ const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
 
-  
+  // Fetch restaurants, orders, and users if needed for display
+  useEffect(() => {
+    // Example code for fetching data (adjust the URLs and logic according to your backend)
+    // Fetching restaurants
+    
+
+    // Fetching orders
+    
+  }, []);
 
   return (
     <div className="admin-dashboard">
@@ -21,7 +29,8 @@ const AdminDashboard = () => {
         <div className="section">
           <h3>Manage Foods</h3>
           <Link to="/foods">View Food</Link>
-          <Link to="/admin/restaurants/add">Add New Restaurant</Link>
+          <Link to="/admin/foods/add">Add Food</Link> {/* New link for adding food */}
+          <Link to="//admin/foods/add">Add New Restaurant</Link>
         </div>
 
         <div className="section">
@@ -29,9 +38,7 @@ const AdminDashboard = () => {
           <Link to="/admin/employees">View Employees</Link>
           <Link to="/admin/signup">Add an Employee</Link>
         </div>
-
       </div>
-
     </div>
   );
 };
