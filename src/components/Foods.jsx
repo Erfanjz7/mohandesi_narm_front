@@ -65,7 +65,6 @@ const Foods = () => {
           params: params,
         });
 
-        console.log("ehe" , typeof(selectedCategory.value));
         if (response.data && response.data.data) {
           setFoods(response.data.data);
           setTotalPages(response.data.total_pages);
@@ -114,20 +113,20 @@ const Foods = () => {
 
       {/* Category Dropdown */}
       <div className="category-filter">
-          <label htmlFor="category-select">Filter by Category:</label>
-          <select
-            id="category-select"
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-          >
-            <option value="">Select Category</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.name}>
-                {category.name}
-              </option>
-            ))}
-          </select>
-        </div>
+        <label htmlFor="category-select">Filter by Category:</label>
+        <select
+          id="category-select"
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+        >
+          <option value="">Select Category</option>
+          {categories.map((category) => (
+            <option key={category.id} value={category.name}>
+              {category.name}
+            </option>
+          ))}
+        </select>
+      </div>
 
       {/* Foods Display */}
       <div className="foods-row">
@@ -137,6 +136,11 @@ const Foods = () => {
           foods.map((food) => (
             <div className="food-card" key={food.id}>
               <h3>{food.name}</h3>
+              <img
+                src={`http://127.0.0.1:8000${food.image}`}
+                alt={food.name}
+                className="food-image"
+              />
               <p><strong>Description:</strong> {food.description}</p>
               <p><strong>Category ID:</strong> {food.category}</p>
               <p className="price"><strong>Price:</strong> {food.price} IRR</p>

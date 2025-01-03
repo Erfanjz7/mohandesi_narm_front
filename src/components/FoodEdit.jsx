@@ -11,7 +11,9 @@ const FoodEdit = () => {
     description: "",
     price: "",
     rate: 0,
+    image: "", // Add image field
   });
+  const [newImage, setNewImage] = useState(null); // To handle new image upload
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const isAdmin = localStorage.getItem("userRole") === "admin"; // Check if the user is an admin
@@ -47,15 +49,31 @@ const FoodEdit = () => {
     }));
   };
 
+  const handleImageChange = (e) => {
+    setNewImage(e.target.files[0]);
+  };
+
   const handleSave = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+
+    formData.append("name", food.name);
+    formData.append("description", food.description);
+    formData.append("price", food.price);
+    formData.append("rate", food.rate);
+
+    if (newImage) {
+      formData.append("image", newImage);
+    }
+
     try {
       await Axios.put(
         `http://127.0.0.1:8000/api/admin/food/${foodid}/edit/`,
-        food,
+        formData,
         {
           headers: {
             Authorization: `Token ${token}`,
+            "Content-Type": "multipart/form-data",
           },
         }
       );
@@ -131,6 +149,24 @@ const FoodEdit = () => {
             min="0"
             max="5"
             required
+          />
+        </div>
+        <div className="form-group">
+          <label>Current Image</label>
+          <img
+            src={`http://127.0.0.1:8000${food.image}`}
+            alt={food.name}
+            className="food-image-preview"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="image">Change Image</label>
+          <input
+            type="file"
+            id="image"
+            name="image"
+            onChange={handleImageChange}
+            accept="image/*"
           />
         </div>
         <div className="form-actions">

@@ -165,7 +165,7 @@ const CustomerDashboard = () => {
                 <div key={food.id} className="food-card">
                   <a href={`/foods/${food.id}`} className="food-link">
                     <img
-                      src={food.image || "https://via.placeholder.com/150"}
+                      src={`http://127.0.0.1:8000${food.image}`}
                       alt={food.name}
                     />
                     <h3>{food.name}</h3>
