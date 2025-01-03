@@ -131,3 +131,191 @@ const CustomerDashboard = () => {
 };
 
 export default CustomerDashboard;
+
+
+// import { useEffect, useState } from "react";
+// import Axios from "axios";
+// import "../style/CustomerDashboard.css"; // Ensure the CSS file is updated for styling
+
+// const CustomerDashboard = () => {
+//   const [categories, setCategories] = useState([]);
+//   const [foods, setFoods] = useState([]);
+//   const [popularFoods, setPopularFoods] = useState([]); // Popular foods state
+//   const [filteredFoods, setFilteredFoods] = useState([]);
+//   const [cart, setCart] = useState([]);
+//   const [address, setAddress] = useState("");
+//   const [selectedCategory, setSelectedCategory] = useState("");
+//   const [error, setError] = useState(null);
+//   const [loading, setLoading] = useState(true);
+
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       try {
+//         const categoryResponse = await Axios.get("http://127.0.0.1:8000/api/categories/");
+//         const foodResponse = await Axios.get("http://127.0.0.1:8000/api/foods/");
+//         setCategories(categoryResponse.data);
+//         setFoods(foodResponse.data);
+//         setFilteredFoods(foodResponse.data);
+
+//         // Fetch popular foods (based on rating or any other criteria)
+//         const popularFoodResponse = await Axios.get("http://127.0.0.1:8000/api/popular-foods/");
+//         setPopularFoods(popularFoodResponse.data);
+
+//         setLoading(false);
+//       } catch (err) {
+//         setError("Failed to load data. Please try again.");
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchData();
+//   }, []);
+
+//   const filterFoods = (categoryId) => {
+//     if (!categoryId) {
+//       setFilteredFoods(foods); // Show all foods if no category is selected
+//     } else {
+//       const filtered = foods.filter((food) => food.category === categoryId);
+//       setFilteredFoods(filtered);
+//     }
+//     setSelectedCategory(categoryId);
+//   };
+
+//   const addToCart = (foodId, quantity) => {
+//     const existingItem = cart.find((item) => item.foodId === foodId);
+//     if (existingItem) {
+//       setCart(
+//         cart.map((item) =>
+//           item.foodId === foodId ? { ...item, quantity: item.quantity + quantity } : item
+//         )
+//       );
+//     } else {
+//       setCart([...cart, { foodId, quantity }]);
+//     }
+//   };
+
+//   const placeOrder = async () => {
+//     if (!address) {
+//       alert("Please enter your address.");
+//       return;
+//     }
+
+//     try {
+//       const orderData = {
+//         items: cart.map((item) => ({ food_id: item.foodId, quantity: item.quantity })),
+//         address,
+//       };
+//       await Axios.post("http://127.0.0.1:8000/api/orders/", orderData);
+//       alert("Order placed successfully!");
+//       setCart([]);
+//       setAddress("");
+//     } catch (err) {
+//       alert("Failed to place order. Please try again.");
+//     }
+//   };
+
+//   if (loading) return <div className="loading">Loading...</div>;
+//   if (error) return <div className="error">{error}</div>;
+
+//   return (
+//     <div className="customer-dashboard">
+//       <h1>Popular Foods</h1>
+
+//       {/* Display popular foods */}
+//       <div className="popular-foods">
+//         {popularFoods.length > 0 ? (
+//           popularFoods.map((food) => (
+//             <div className="food-card" key={food.id}>
+//               <h3>{food.name}</h3>
+//               <p>{food.description}</p>
+//               <p>Price: ${food.price}</p>
+//               <button
+//                 onClick={() => {
+//                   const quantity = prompt("Enter quantity:");
+//                   if (quantity > 0) addToCart(food.id, parseInt(quantity, 10));
+//                 }}
+//               >
+//                 Add to Cart
+//               </button>
+//             </div>
+//           ))
+//         ) : (
+//           <p>No popular foods available.</p>
+//         )}
+//       </div>
+
+//       <h1>Foods</h1>
+
+//       {/* Category Filter */}
+//       <div className="category-filter">
+//         <button onClick={() => filterFoods("")} className={!selectedCategory ? "active" : ""}>
+//           All
+//         </button>
+//         {categories.map((category) => (
+//           <button
+//             key={category.id}
+//             onClick={() => filterFoods(category.id)}
+//             className={selectedCategory === category.id ? "active" : ""}
+//           >
+//             {category.name}
+//           </button>
+//         ))}
+//       </div>
+
+//       {/* Food List */}
+//       <div className="food-list">
+//         {filteredFoods.map((food) => (
+//           <div className="food-card" key={food.id}>
+//             <h3>{food.name}</h3>
+//             <p>{food.description}</p>
+//             <p>Price: ${food.price}</p>
+//             <button
+//               onClick={() => {
+//                 const quantity = prompt("Enter quantity:");
+//                 if (quantity > 0) addToCart(food.id, parseInt(quantity, 10));
+//               }}
+//             >
+//               Add to Cart
+//             </button>
+//           </div>
+//         ))}
+//       </div>
+
+//       {/* Cart Section */}
+//       <div className="cart-section">
+//         <h2>Your Cart</h2>
+//         {cart.length === 0 ? (
+//           <p>Your cart is empty.</p>
+//         ) : (
+//           <ul>
+//             {cart.map((item) => {
+//               const food = foods.find((f) => f.id === item.foodId);
+//               return (
+//                 <li key={item.foodId}>
+//                   {food.name} x {item.quantity}
+//                 </li>
+//               );
+//             })}
+//           </ul>
+//         )}
+//       </div>
+
+//       {/* Order Section */}
+//       <div className="order-section">
+//         <h2>Place Your Order</h2>
+//         <textarea
+//           placeholder="Enter your address"
+//           value={address}
+//           onChange={(e) => setAddress(e.target.value)}
+//           required
+//         />
+//         <button onClick={placeOrder} disabled={cart.length === 0}>
+//           Place Order
+//         </button>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default CustomerDashboard;
+

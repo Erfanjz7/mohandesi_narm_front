@@ -1,0 +1,29 @@
+.employee-dashboard {
+    padding: 20px;
+  }
+  
+  .orders-container {
+    margin-top: 20px;
+  }
+  
+  .orders-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .orders-container th, .orders-container td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .orders-container th {
+    background-color: #f4f4f4;
+  }
+  
+  .orders-container button {
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  

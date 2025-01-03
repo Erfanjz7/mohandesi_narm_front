@@ -23,7 +23,7 @@ const FoodEdit = () => {
     }
 
     // Fetch food details for editing
-    Axios.get(`http://127.0.0.1:8000/api/resturants/${id}/foods/${foodid}/`) // Corrected URL to use id and foodid
+    Axios.get(`http://127.0.0.1:8000/api/food/detail/${foodid}`) // Corrected URL to use id and foodid
       .then((response) => {
         setFood(response.data);
         setLoading(false);
@@ -45,9 +45,9 @@ const FoodEdit = () => {
   const handleSave = async (e) => {
     e.preventDefault();
     try {
-      await Axios.put(`http://127.0.0.1:8000/api/resturants/${id}/foods/${foodid}/`, food);
+      await Axios.put(`http://127.0.0.1:8000/api/admin/food/${foodid}/edit/`, food);
       alert("Food updated successfully");
-      navigate(`/admin/resturants/${id}/foods`); // Redirect back to restaurant foods page
+      navigate(`/foods`); // Redirect back to restaurant foods page
     } catch (err) {
       setError("Failed to update food.");
     }
@@ -55,9 +55,9 @@ const FoodEdit = () => {
 
   const handleDelete = async () => {
     try {
-      await Axios.delete(`http://127.0.0.1:8000/api/resturants/${id}/foods/${foodid}/`);
+      await Axios.delete(`http://127.0.0.1:8000/api/admin/food/${foodid}/delete/`);
       alert("Food deleted successfully");
-      navigate(`/admin/resturants/${id}/foods`); // Redirect back to restaurant foods page
+      navigate(`/foods`); // Redirect back to restaurant foods page
     } catch (err) {
       setError("Failed to delete food.");
     }

@@ -1,0 +1,25 @@
+.employee-list-container {
+    padding: 20px;
+  }
+  
+  .employee-list-container table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .employee-list-container th, .employee-list-container td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .employee-list-container th {
+    background-color: #f4f4f4;
+  }
+  
+  .employee-list-container button {
+    margin-right: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  

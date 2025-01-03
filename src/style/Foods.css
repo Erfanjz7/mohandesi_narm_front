@@ -1,0 +1,87 @@
+.restaurant-foods-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2rem;
+  color: #333;
+}
+
+.foods-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.food-card {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.food-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.food-card h3 {
+  margin: 0 0 10px;
+  font-size: 1.5rem;
+  color: #444;
+}
+
+.food-card p {
+  margin: 5px 0;
+  font-size: 1rem;
+  color: #666;
+}
+
+.food-card p strong {
+  color: #333;
+}
+
+.food-card .price {
+  font-size: 1.2rem;
+  color: #27ae60;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.food-card .rate {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.food-card .rate span {
+  margin-left: 5px;
+  font-size: 1rem;
+  color: #f39c12;
+}
+
+.food-card button {
+  margin-top: 15px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.food-card button:hover {
+  background-color: #0056b3;
+}

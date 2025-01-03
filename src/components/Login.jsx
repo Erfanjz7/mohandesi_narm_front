@@ -21,6 +21,8 @@ const Login = () => {
         username,
         password,
       });
+      console.log(response.data , " / " , response.status)
+      console.log("eheeeeeeeeee")
 
       if (response.status === 200) {
         const { token, role } = response.data;
@@ -48,6 +50,7 @@ const Login = () => {
         // Adding a slight delay to ensure the token is stored before navigation
       }
     } catch (error) {
+      console.log("ridi")
       setLoading(false);
       if (error.response && error.response.status === 401) {
         setError("Invalid credentials. Please try again.");

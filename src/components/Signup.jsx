@@ -25,14 +25,17 @@ const Signup = () => {
 
     try {
       setLoading(true);
-      const response = await Axios.post("http://127.0.0.1:8000/api/signup/", userData);
+      // Determine the endpoint based on the user's role
+      const isAdmin = localStorage.getItem("userRole") === "admin";
+      const endpoint = isAdmin
+        ? "http://127.0.0.1:8000/api/admin/employee/register/"
+        : "http://127.0.0.1:8000/api/signup/";
+
+      const response = await Axios.post(endpoint, userData);
 
       if (response.status === 201) {
         alert("Account created successfully!");
-        // Check if admin is logged in
-        const isAdmin = localStorage.getItem("userRole") === "admin";
         if (isAdmin) {
-          console.log("isAdmin")
           navigate("/admin-dashboard");
         } else {
           navigate("/login");
