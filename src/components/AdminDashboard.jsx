@@ -30,7 +30,6 @@ const AdminDashboard = () => {
           <h3>Manage Foods</h3>
           <Link to="/foods">View Food</Link>
           <Link to="/admin/foods/add">Add Food</Link> {/* New link for adding food */}
-          <Link to="//admin/foods/add">Add New Restaurant</Link>
         </div>
 
         <div className="section">

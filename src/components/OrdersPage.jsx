@@ -23,13 +23,13 @@ const OrdersPage = () => {
           return;
         }
 
-        const response = await Axios.get("http://127.0.0.1:8000/api/order/", {
+        const response = await Axios.get("http://127.0.0.1:8000/api/orders/", {
           headers: {
             Authorization: `Token ${token}`,
           },
           params: {
             page: page,
-            size: 10, // Items per page
+            
           },
         });
 
