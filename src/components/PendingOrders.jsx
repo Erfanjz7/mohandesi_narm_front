@@ -5,12 +5,14 @@ import "../style/EmployeeOrders.css";
 
 const PendingOrders = () => {
   const [orders, setOrders] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchOrders = async () => {
+    const fetchOrders = async (page) => {
       try {
         const token = localStorage.getItem("authToken");
 
@@ -24,9 +26,15 @@ const PendingOrders = () => {
           headers: {
             Authorization: `Token ${token}`,
           },
+          params: {
+            size: 10,
+            page,
+          },
         });
 
-        setOrders(response.data);
+        setOrders(response.data.data); // Set the orders for the current page
+        setCurrentPage(response.data.page); // Set the current page
+        setTotalPages(response.data.total_pages); // Set the total number of pages
         setLoading(false);
       } catch (err) {
         setError("Failed to load orders.");
@@ -34,46 +42,44 @@ const PendingOrders = () => {
       }
     };
 
-    fetchOrders();
-  }, []);
+    fetchOrders(currentPage);
+  }, [currentPage]);
 
   const handleAcceptOrder = async (orderId) => {
     try {
       const token = localStorage.getItem("authToken");
-  
+
       if (!token) {
         alert("Unauthorized! Please login again.");
         return;
       }
-  
+
       // Send the POST request to accept the order
-      const response = await Axios.post(
+      await Axios.post(
         `http://127.0.0.1:8000/api/employee/orders/accept/${orderId}/`,
-        {
-          // If the backend expects some data (like the order status), send it here
-          status: "ACCEPTED",
-        },
+        { status: "ACCEPTED" },
         {
           headers: {
             Authorization: `Token ${token}`,
           },
         }
       );
-  
+
       alert("Order accepted successfully!");
-  
+
       // Remove the accepted order from the list of pending orders
       setOrders((prevOrders) => prevOrders.filter((order) => order.id !== orderId));
-  
-      // Optionally, navigate to accepted orders page (you can skip this if you want to stay on the same page)
-      navigate("/employee/accepted-orders");
-  
     } catch (err) {
       console.error("Error accepting the order:", err);
       alert("Failed to accept order.");
     }
   };
-  
+
+  const handlePageChange = (newPage) => {
+    if (newPage < 1 || newPage > totalPages) return;
+    setCurrentPage(newPage);
+    setLoading(true);
+  };
 
   if (loading) return <div className="loading">Loading...</div>;
   if (error) return <div className="error">{error}</div>;
@@ -105,6 +111,19 @@ const PendingOrders = () => {
           ))}
         </tbody>
       </table>
+
+      {/* Pagination Controls */}
+      <div className="pagination">
+        <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+          Previous
+        </button>
+        <span>
+          Page {currentPage} of {totalPages}
+        </span>
+        <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
+          Next
+        </button>
+      </div>
     </div>
   );
 };

@@ -1,0 +1,40 @@
+/* OrdersPage.css */
+.orders-page {
+    padding: 20px;
+  }
+  
+  .orders-list {
+    margin-top: 20px;
+  }
+  
+  .order-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin: 10px 0;
+  }
+  
+  .order-card h3 {
+    margin-top: 0;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .pagination button {
+    padding: 10px;
+    margin: 0 5px;
+    cursor: pointer;
+  }
+  
+  .pagination button:disabled {
+    cursor: not-allowed;
+    background-color: #ddd;
+  }
+  
+  .pagination span {
+    margin: 0 10px;
+  }
+  

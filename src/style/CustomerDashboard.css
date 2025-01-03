@@ -1,40 +1,122 @@
 .customer-dashboard {
-    font-family: Arial, sans-serif;
-    padding: 20px;
-  }
-  
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .restaurant-list,
-  .menu,
-  .order-history {
-    margin-top: 20px;
-  }
-  
-  button {
-    margin-left: 10px;
-    padding: 5px 10px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  button:disabled {
-    background-color: #ccc;
-  }
-  
-  ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  li {
-    margin: 10px 0;
-  }
-  
+  padding: 20px;
+}
+
+.popular-foods {
+  margin-bottom: 20px;
+}
+
+.foods-list-horizontal {
+  display: flex;
+  overflow-x: auto;
+  gap: 20px;
+}
+
+.food-card {
+  flex: 0 0 auto;
+  width: 150px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.food-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+.food-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.view-all-foods {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.view-all-foods button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.cart-actions {
+  margin-top: 20px;
+}
+
+.cart-actions button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+/* Add to the existing CustomerDashboard.css */
+.customer-dashboard {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.navbar {
+  width: 200px;
+  background-color: #333;
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+
+.navbar h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.navbar button {
+  background-color: #444;
+  color: white;
+  padding: 10px;
+  border: none;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.navbar button:hover {
+  background-color: #555;
+}
+
+.dashboard-content {
+  flex-grow: 1;
+  padding: 20px;
+  margin-left: 220px;  /* Space for the navbar */
+}
+
+.food-card {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin: 10px;
+}
+
+.food-link {
+  text-decoration: none;
+  color: black;
+}
+
+.food-link img {
+  width: 100%;
+  height: auto;
+}
+
+.food-card button {
+  background-color: #28a745;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.food-card button:hover {
+  background-color: #218838;
+}
