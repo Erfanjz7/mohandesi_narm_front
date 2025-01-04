@@ -12,8 +12,10 @@ const FoodEdit = () => {
     price: "",
     rate: 0,
     image: "", // Add image field
+    category: "", // Add category field
   });
   const [newImage, setNewImage] = useState(null); // To handle new image upload
+  const [categories, setCategories] = useState([]); // Store categories
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const isAdmin = localStorage.getItem("userRole") === "admin"; // Check if the user is an admin
@@ -39,6 +41,19 @@ const FoodEdit = () => {
         setError("Failed to load food details.");
         setLoading(false);
       });
+
+    // Fetch categories for the dropdown
+    Axios.get("http://127.0.0.1:8000/api/getcategories/", {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    })
+      .then((response) => {
+        setCategories(response.data); // Store categories in state
+      })
+      .catch(() => {
+        setError("Failed to load categories.");
+      });
   }, [foodid, isAdmin, navigate, token]);
 
   const handleChange = (e) => {
@@ -55,32 +70,66 @@ const FoodEdit = () => {
 
   const handleSave = async (e) => {
     e.preventDefault();
+  
     const formData = new FormData();
-
-    formData.append("name", food.name);
-    formData.append("description", food.description);
-    formData.append("price", food.price);
-    formData.append("rate", food.rate);
-
+    formData.append('name', food.name);
+    formData.append('description', food.description);
+    formData.append('price', food.price);
+    formData.append('rate', food.rate);
+    formData.append('category', food.category);
+  
+    // If a new image is selected, append it to FormData
     if (newImage) {
-      formData.append("image", newImage);
+      formData.append('image', newImage);
     }
-
+  
     try {
-      await Axios.put(
+      const response = await Axios.put(
         `http://127.0.0.1:8000/api/admin/food/${foodid}/edit/`,
         formData,
         {
           headers: {
             Authorization: `Token ${token}`,
-            "Content-Type": "multipart/form-data",
+            // Do NOT set "Content-Type", Axios will set it automatically when using FormData
           },
         }
       );
       alert("Food updated successfully");
-      navigate(`/foods`); // Redirect back to restaurant foods page
+      navigate(`/foods`);
     } catch (err) {
       setError("Failed to update food.");
+      console.error("Error:", err.response ? err.response.data : err.message);
+    }
+  };
+  
+  
+  // Function to send the data
+  const saveData = async (imageBase64) => {
+    const data = {
+      name: food.name,
+      description: food.description,
+      price: food.price,
+      rate: food.rate,
+      category: food.category, // Send selected category id
+      image: imageBase64, // Add the Base64 string as image
+    };
+  
+    try {
+      const response = await Axios.put(
+        `http://127.0.0.1:8000/api/admin/food/${foodid}/edit/`,
+        data,
+        {
+          headers: {
+            Authorization: `Token ${token}`,
+            "Content-Type": "application/json", // Send as JSON
+          },
+        }
+      );
+      alert("Food updated successfully");
+      navigate(`/foods`);
+    } catch (err) {
+      setError("Failed to update food.");
+      console.error("Error:", err.response ? err.response.data : err.message);
     }
   };
 
@@ -168,6 +217,23 @@ const FoodEdit = () => {
             onChange={handleImageChange}
             accept="image/*"
           />
+        </div>
+        <div className="form-group">
+          <label htmlFor="category">Category</label>
+          <select
+            id="category"
+            name="category"
+            value={food.category}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Select Category</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="form-actions">
           <button type="submit">Save Changes</button>

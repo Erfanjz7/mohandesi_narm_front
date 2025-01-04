@@ -15,6 +15,7 @@ import AcceptedOrders from "./components/AcceptedOrders";
 import FoodAdd from "./components/FoodAdd";
 import Cart from "./components/Cart";
 import OrdersPage from "./components/OrdersPage";
+import "./App.css";
 
 const Welcome = () => {
   const navigate = useNavigate();

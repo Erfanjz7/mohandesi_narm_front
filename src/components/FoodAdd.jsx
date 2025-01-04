@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Axios from "axios";
 import "../style/FoodAdd.css";
 
@@ -6,9 +6,21 @@ const FoodAdd = () => {
   const [foodName, setFoodName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
-  const [category, setCategory] = useState(""); // Category is now just an ID
+  const [category, setCategory] = useState(""); // Selected category ID
+  const [categories, setCategories] = useState([]); // List of categories
   const [image, setImage] = useState(null); // Image file state
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    // Fetch categories from the API
+    Axios.get("http://127.0.0.1:8000/api/getcategories/")
+      .then((response) => {
+        setCategories(response.data);
+      })
+      .catch(() => {
+        setError("Failed to load categories.");
+      });
+  }, []);
 
   const handleImageChange = (e) => {
     setImage(e.target.files[0]); // Update image state with selected file
@@ -27,7 +39,7 @@ const FoodAdd = () => {
     formData.append("name", foodName);
     formData.append("description", description);
     formData.append("price", price);
-    formData.append("category", category); // Add category ID
+    formData.append("category", category); // Add selected category ID
     if (image) {
       formData.append("image", image); // Add image file
     }
@@ -96,14 +108,20 @@ const FoodAdd = () => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="category">Category ID</label>
-          <input
-            type="number"
+          <label htmlFor="category">Category</label>
+          <select
             id="category"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             required
-          />
+          >
+            <option value="" disabled>Select a category</option>
+            {categories.map((cat) => (
+              <option key={cat.id} value={cat.id}>
+                {cat.name}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="form-group">

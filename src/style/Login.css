@@ -1,106 +1,126 @@
-/* General Styles */
+/* Login.css */
+
 body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Arial', sans-serif;
-    background: #f7f7f7; /* Light background for food-themed design */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+  margin: 0;
+  font-family: "Arial", sans-serif;
+  background: linear-gradient(135deg, #f39c12, #d35400);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+
+.login-container {
+  background: #fff;
+  color: #333;
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 1s ease-out;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  color: #d35400;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  background: #f9f9f9;
+  transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  border-color: #d35400;
+  outline: none;
+}
+
+button {
+  width: 100%;
+  padding: 0.8rem;
+  background: #d35400;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+button:disabled {
+  background: #f1c40f;
+  cursor: not-allowed;
+}
+
+button:hover:enabled {
+  background: #e67e22;
+  transform: translateY(-2px);
+}
+
+button:active:enabled {
+  transform: translateY(1px);
+}
+
+.error {
+  background: #e74c3c;
+  color: #fff;
+  padding: 0.8rem;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 14px;
+  margin-bottom: 1rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
   }
-  
-  /* Container for the Login Box */
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 600px) {
   .login-container {
-    width: 100%;
-    max-width: 400px;
-    background: #ffffff; /* White card-like container */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    padding: 20px 30px;
-    box-sizing: border-box;
+    padding: 1.5rem;
+    width: 90%;
   }
-  
-  /* Title */
-  .login-container h2 {
-    margin: 0;
-    margin-bottom: 20px;
-    font-size: 1.8em;
-    font-weight: bold;
-    color: #333333;
-    text-align: center;
+
+  h2 {
+    font-size: 1.5rem;
   }
-  
-  /* Input Field Label */
-  .login-container label {
-    font-size: 0.9em;
-    color: #555555;
-    margin-bottom: 5px;
-    display: block;
+
+  button {
+    font-size: 14px;
   }
-  
-  /* Input Fields */
-  .login-container input[type="text"],
-  .login-container input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    font-size: 1em;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-sizing: border-box;
-    outline: none;
-    transition: border-color 0.3s ease;
-  }
-  
-  .login-container input[type="text"]:focus,
-  .login-container input[type="password"]:focus {
-    border-color: #ff6347; /* Tomato-themed focus color */
-  }
-  
-  /* Error Message */
-  .login-container .error {
-    color: #ff4d4d; /* Red color for errors */
-    font-size: 0.9em;
-    margin-bottom: 10px;
-    text-align: center;
-  }
-  
-  /* Submit Button */
-  .login-container button {
-    width: 100%;
-    padding: 10px 15px;
-    font-size: 1em;
-    font-weight: bold;
-    color: white;
-    background: #ff6347; /* Tomato-themed button color */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .login-container button:hover {
-    background: #e5533c; /* Slightly darker on hover */
-  }
-  
-  .login-container button:disabled {
-    background: #ffb3a7; /* Lighter tomato when disabled */
-    cursor: not-allowed;
-  }
-  
-  /* Additional Styles for Responsiveness */
-  @media (max-width: 768px) {
-    .login-container {
-      padding: 15px 20px;
-    }
-  
-    .login-container h2 {
-      font-size: 1.5em;
-    }
-  
-    .login-container button {
-      font-size: 0.9em;
-    }
-  }
-  
+}

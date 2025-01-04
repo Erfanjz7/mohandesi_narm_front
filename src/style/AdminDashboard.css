@@ -1,158 +1,107 @@
-/* General Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-  }
-  
-  /* Admin Dashboard Container */
-  .admin-dashboard {
-    background-color: #f4f4f9;
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  /* Dashboard Header */
-  .admin-dashboard h2 {
-    text-align: center;
-    font-size: 2.5rem;
-    color: #333;
-    margin-bottom: 30px;
-  }
-  
-  /* Error message styling */
-  .error {
-    color: red;
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  
-  /* Dashboard Actions */
+/* General reset */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f9fafb;
+}
+
+/* Admin Dashboard Styling */
+.admin-dashboard {
+  padding: 40px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  max-width: 1200px;
+  width: 100%;
+  margin: 20px auto;
+}
+
+.admin-dashboard h2 {
+  font-size: 32px;
+  color: #333;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.error {
+  color: #ff4d4d;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Dashboard Actions Layout */
+.dashboard-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.section {
+  background-color: #f4f4f9;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+h3 {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.section a {
+  display: block;
+  color: #0066cc;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.section a:hover {
+  color: #004a99;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
   .dashboard-actions {
-    display: flex;
-    flex-wrap: wrap;
+    grid-template-columns: 1fr;
     gap: 20px;
-    justify-content: space-between;
-    margin-bottom: 30px;
   }
   
-  /* Section Styling */
+  .admin-dashboard {
+    padding: 30px;
+    width: 90%;
+  }
+
+  h2 {
+    font-size: 28px;
+  }
+
   .section {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    width: 100%;
-    max-width: 350px;
-  }
-  
-  .section h3 {
-    font-size: 1.8rem;
-    color: #444;
-    margin-bottom: 15px;
-  }
-  
-  .section a {
-    display: block;
-    color: #007bff;
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-    text-decoration: none;
-    transition: color 0.3s ease;
-  }
-  
-  .section a:hover {
-    color: #0056b3;
-  }
-  
-  /* Dashboard Data Section */
-  .dashboard-data {
-    margin-top: 40px;
-  }
-  
-  .dashboard-data h3 {
-    font-size: 1.8rem;
-    color: #444;
-    margin-bottom: 20px;
-  }
-  
-  /* Recent Data Styling */
-  .recent-restaurants,
-  .recent-orders,
-  .recent-users {
-    background-color: #fff;
     padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
   
-  .recent-restaurants h4,
-  .recent-orders h4,
-  .recent-users h4 {
-    font-size: 1.5rem;
-    color: #444;
-    margin-bottom: 15px;
+  h3 {
+    font-size: 18px;
   }
-  
-  .recent-restaurants ul,
-  .recent-orders ul,
-  .recent-users ul {
-    list-style: none;
-    padding-left: 0;
-  }
-  
-  .recent-restaurants li,
-  .recent-orders li,
-  .recent-users li {
-    font-size: 1.1rem;
-    color: #555;
-    margin-bottom: 10px;
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .dashboard-actions {
-      flex-direction: column;
-      align-items: center;
-    }
-  
-    .section {
-      width: 100%;
-      max-width: none;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .admin-dashboard {
-      padding: 10px;
-    }
-  
-    .admin-dashboard h2 {
-      font-size: 2rem;
-    }
-  
-    .section h3 {
-      font-size: 1.5rem;
-    }
-  
-    .section a {
-      font-size: 1rem;
-    }
-  
-    .recent-restaurants h4,
-    .recent-orders h4,
-    .recent-users h4 {
-      font-size: 1.2rem;
-    }
-  
-    .recent-restaurants li,
-    .recent-orders li,
-    .recent-users li {
-      font-size: 1rem;
-    }
-  }
-  
+}
+
