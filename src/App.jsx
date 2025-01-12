@@ -19,6 +19,7 @@ import PendingOrders from "./components/PendingOrders";
 import AcceptedOrders from "./components/AcceptedOrders";
 import FoodAdd from "./components/FoodAdd";
 import Cart from "./components/Cart";
+import MostSoldFoods from "./components/MostSoldFoods";
 import OrderDetailPage from "./components/OrderDetailPage";
 import OrdersPage from "./components/OrdersPage";
 import Welcome from "./components/Welcome";
@@ -235,6 +236,7 @@ const App = () => {
       <Route path="/customer/cart" element={<Cart />} />
       <Route path="/customer/orders" element={<OrdersPage />} />
       <Route path="customer/order-detail/:id" element={<OrderDetailPage />} />
+      <Route path="/admin/most-sold-foods" element={<MostSoldFoods />} />
     </Routes>
   );
 };

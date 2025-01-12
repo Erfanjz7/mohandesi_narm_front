@@ -42,6 +42,13 @@ const AdminDashboard = () => {
           <Link to="/admin/discounts">View Discount Codes</Link>
           <Link to="/admin/adddiscounts">Add Discount Code</Link>
         </div>
+
+        {/* New Sales & Revenue Section */}
+        <div className="section">
+          <h3>Sales & Revenue</h3>
+          <Link to="/admin/most-sold-foods">See Most Sold Foods</Link>
+          <Link to="/admin/restaurant-income">See Restaurant Income</Link>
+        </div>
       </div>
     </div>
   );
