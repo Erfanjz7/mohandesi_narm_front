@@ -1,10 +1,14 @@
 // import React from "react";
+import { useState } from "react";
+import Axios from "axios";
+import "./App.css";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import Login from "./components/Login";
-import Signup from "./components/Signup";
+import AddDiscount from "./components/AddDiscount";
 import AdminDashboard from "./components/AdminDashboard";
 import EmployeeDashboard from "./components/EmployeeDashboard";
 import CustomerDashboard from "./components/CustomerDashboard";
+import CustomerAddress from "./components/CustomerAddress";
+import DiscountCodes from "./components/DiscountCodes";
 import Foods from "./components/Foods";
 import FoodEdit from "./components/FoodEdit";
 import AdminSignup from "./components/AdminSignup";
@@ -15,39 +19,211 @@ import AcceptedOrders from "./components/AcceptedOrders";
 import FoodAdd from "./components/FoodAdd";
 import Cart from "./components/Cart";
 import OrdersPage from "./components/OrdersPage";
+import Welcome from "./components/Welcome";
 import "./App.css";
 
-const Welcome = () => {
+
+const AuthPage = () => {
+  const [isLogin, setIsLogin] = useState(true);
+  const [loginData, setLoginData] = useState({ username: "", password: "" });
+  const [signupData, setSignupData] = useState({
+    username: "",
+    password: "",
+    first_name: "",
+    email: "",
+  });
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const handleToggle = () => {
+    setIsLogin(!isLogin);
+    setError(null);
+  };
+
+  const handleLoginChange = (e) => {
+    const { name, value } = e.target;
+    setLoginData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSignupChange = (e) => {
+    const { name, value } = e.target;
+    setSignupData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await Axios.post("http://127.0.0.1:8000/api/login/", loginData);
+      if (response.status === 200) {
+        const { token, role } = response.data;
+        localStorage.setItem("authToken", token);
+        localStorage.setItem("userRole", role);
+
+        switch (role) {
+          case "admin":
+            navigate("/admin-dashboard");
+            break;
+          case "employee":
+            navigate("/employee-dashboard");
+            break;
+          case "customer":
+            navigate("/customer-dashboard");
+            break;
+          default:
+            navigate("/login");
+        }
+      }
+    } catch (error) {
+      setError("Invalid credentials or an error occurred.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSignupSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await Axios.post("http://127.0.0.1:8000/api/signup/", signupData);
+      if (response.status === 201) {
+        alert("Account created successfully!");
+        navigate("/");
+      }
+    } catch (error) {
+      setError("An error occurred. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="welcome-container">
-      <h1>Welcome to Our App</h1>
-      <p>Please choose an option:</p>
-      <div className="button-container">
-        <button onClick={() => navigate("/login")} className="btn">
-          Login
-        </button>
-        <button onClick={() => navigate("/signup")} className="btn">
-          Signup
-        </button>
-      </div>
+    <div className={`auth-container ${isLogin ? "login-active" : "signup-active"}`}>
+      {isLogin ? (
+        <>
+          <div className="poster">
+            <h1>Welcome Back!</h1>
+            <p>Sign in to continue your journey with us.</p>
+            <button onClick={handleToggle}>Switch to Signup</button>
+          </div>
+          <div className="form-container">
+            <h2>Login</h2>
+            <form onSubmit={handleLoginSubmit}>
+              <div>
+                <label htmlFor="login-username">Username</label>
+                <input
+                  type="text"
+                  id="login-username"
+                  name="username"
+                  value={loginData.username}
+                  onChange={handleLoginChange}
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="login-password">Password</label>
+                <input
+                  type="password"
+                  id="login-password"
+                  name="password"
+                  value={loginData.password}
+                  onChange={handleLoginChange}
+                  required
+                />
+              </div>
+              {error && <div className="error">{error}</div>}
+              <button type="submit" disabled={loading}>
+                {loading ? "Logging in..." : "Login"}
+              </button>
+            </form>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="form-container">
+            <h2>Signup</h2>
+            <form onSubmit={handleSignupSubmit}>
+              <div>
+                <label htmlFor="signup-username">Username</label>
+                <input
+                  type="text"
+                  id="signup-username"
+                  name="username"
+                  value={signupData.username}
+                  onChange={handleSignupChange}
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="signup-email">Email</label>
+                <input
+                  type="email"
+                  id="signup-email"
+                  name="email"
+                  value={signupData.email}
+                  onChange={handleSignupChange}
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="signup-password">Password</label>
+                <input
+                  type="password"
+                  id="signup-password"
+                  name="password"
+                  value={signupData.password}
+                  onChange={handleSignupChange}
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="signup-first_name">First Name</label>
+                <input
+                  type="text"
+                  id="signup-first_name"
+                  name="first_name"
+                  value={signupData.first_name}
+                  onChange={handleSignupChange}
+                  required
+                />
+              </div>
+              {error && <div className="error">{error}</div>}
+              <button type="submit" disabled={loading}>
+                {loading ? "Signing up..." : "Signup"}
+              </button>
+            </form>
+          </div>
+          <div className="poster">
+            <h1>Welcome!</h1>
+            <p>Create an account to start your adventure.</p>
+            <button onClick={handleToggle}>Switch to Login</button>
+          </div>
+        </>
+      )}
     </div>
   );
 };
+
 
 const App = () => {
   return (
     <Routes>
       <Route path="/" element={<Welcome />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
+      <Route path="/auth" element={<AuthPage />} />
       <Route path="/admin-dashboard" element={<AdminDashboard />} />
+      <Route path="/admin/discounts" element={<DiscountCodes />} />
+      <Route path="/admin/adddiscounts" element={<AddDiscount />} />
       <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
       <Route path="/customer-dashboard" element={<CustomerDashboard />} />
+      <Route path="/customer/addresses" element={<CustomerAddress />} />  {/* New Route */}
       <Route path="/foods" element={<Foods />} />
       <Route path="/foods/food/edit/:foodid" element={<FoodEdit />} />
-      <Route path="/admin/employees" element={<EmployeeList />}/>
+      <Route path="/admin/employees" element={<EmployeeList />} />
       <Route path="/admin/signup" element={<AdminSignup />} />
       <Route path="/admin/employees/edit/:employeeId" element={<EmployeeEdit />} />
       <Route path="/employee/pending-orders" element={<PendingOrders />} />
@@ -60,3 +236,5 @@ const App = () => {
 };
 
 export default App;
+
+

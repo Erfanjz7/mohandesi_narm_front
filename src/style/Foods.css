@@ -1,57 +1,158 @@
-.restaurant-foods-container {
-  padding: 20px;
-}
-
+/* Foods Row */
 .foods-row {
   display: flex;
-  overflow-x: auto;
-  gap: 16px;
-  padding: 10px;
+  flex-wrap: nowrap; /* Ensure no wrapping of items */
+  gap: 20px;
+  overflow-x: auto; /* Allow horizontal scrolling if items overflow */
+  padding-bottom: 20px; /* Add padding to prevent scrollbar from overlapping content */
+  margin-top: 20px;
 }
 
 .food-card {
-  flex: 0 0 20%; /* Each card takes 20% of the row's width */
-  max-width: 20%;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 16px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  flex: 0 0 auto; /* Ensure food cards maintain their width */
+  width: 250px; /* Adjusted width for smaller cards */
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
-  background: #fff;
-  position: relative; /* Make sure positioning is relative for positioning the quantity controls */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  min-height: 350px; /* Set a minimum height to ensure consistent card height */
+}
+
+.food-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Make sure the food image scales well */
+.food-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 15px;
 }
 
 .food-card h3 {
-  font-size: 18px;
+  font-size: 18px; /* Adjusted font size */
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.food-card p {
+  font-size: 14px;
+  color: #555;
   margin-bottom: 10px;
 }
 
 .food-card .price {
-  font-weight: bold;
-  color: #28a745;
-  margin: 8px 0;
-}
-
-.food-card .rate span {
-  color: #ffc107;
+  font-size: 16px; /* Adjusted font size */
+  color: #0066cc;
   font-weight: bold;
 }
 
+.food-card .rate {
+  font-size: 14px; /* Adjusted font size */
+  color: #888;
+}
+
+.food-card button {
+  padding: 8px 16px;
+  background-color: #0066cc;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  margin-top: 15px;
+}
+
+.food-card button:hover {
+  background-color: #004a99;
+  transform: scale(1.05);
+}
+
+.food-card .quantity-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.food-card .quantity-controls button {
+  background-color: #f1f1f1;
+  color: #333;
+  border-radius: 5px;
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.food-card .quantity-controls span {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.food-card .quantity-controls button:hover {
+  background-color: #ddd;
+}
+
+.food-card .quantity-controls button:active {
+  transform: scale(0.95);
+}
+
+/* Category Dropdown */
+.category-filter {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.category-filter label {
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+.category-filter select {
+  padding: 8px 12px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  outline: none;
+  width: 200px; /* Set width to make it look consistent */
+  cursor: pointer;
+}
+
+.category-filter select:hover {
+  border-color: #0066cc;
+}
+
+/* Pagination Controls */
 .pagination-controls {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  gap: 15px;
+  margin-top: 30px;
 }
 
 .pagination-controls button {
-  padding: 8px 16px;
-  margin: 0 10px;
+  padding: 10px 15px;
+  background-color: #0066cc;
+  color: white;
   border: none;
-  background-color: #007bff;
-  color: #fff;
+  border-radius: 5px;
   cursor: pointer;
-  border-radius: 4px;
+  font-size: 16px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.pagination-controls button:hover {
+  background-color: #004a99;
+  transform: scale(1.05);
 }
 
 .pagination-controls button:disabled {
@@ -60,57 +161,51 @@
 }
 
 .pagination-controls span {
-  font-size: 16px;
-}
-
-/* Add styles for the Add to Cart button */
-.food-card button {
-  margin-top: 10px;
-  padding: 10px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.food-card button:hover {
-  background-color: #218838;
-}
-
-/* Quantity control container */
-.quantity-controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 10px 0;
-}
-
-.quantity-controls button {
-  padding: 5px 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
   font-size: 18px;
-  margin: 0 5px;
-}
-
-.quantity-controls button:hover {
-  background-color: #0056b3;
-}
-
-.quantity-controls span {
-  font-size: 18px;
+  color: #333;
   margin: 0 10px;
-  font-weight: bold;
 }
 
-/* Add styling for the quantity and Add to Cart button container */
-.food-card .quantity-controls,
-.food-card button {
-  display: inline-block;
-  width: 100%;
-  text-align: center;
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .restaurant-foods-container {
+    width: 90%;
+    padding: 20px;
+  }
+
+  .restaurant-foods-container h2 {
+    font-size: 28px;
+  }
+
+  .category-filter select {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  .food-card h3 {
+    font-size: 20px;
+  }
+
+  .food-card p {
+    font-size: 14px;
+  }
+
+  .food-card .price {
+    font-size: 16px;
+  }
+
+  .pagination-controls button {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
+  .foods-row {
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+    gap: 15px;
+    justify-content: center;
+  }
+
+  .food-card {
+    width: 220px; /* Smaller card width for mobile */
+  }
 }

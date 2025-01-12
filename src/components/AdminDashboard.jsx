@@ -13,10 +13,8 @@ const AdminDashboard = () => {
   useEffect(() => {
     // Example code for fetching data (adjust the URLs and logic according to your backend)
     // Fetching restaurants
-    
 
     // Fetching orders
-    
   }, []);
 
   return (
@@ -29,13 +27,20 @@ const AdminDashboard = () => {
         <div className="section">
           <h3>Manage Foods</h3>
           <Link to="/foods">View Food</Link>
-          <Link to="/admin/foods/add">Add Food</Link> {/* New link for adding food */}
+          <Link to="/admin/foods/add">Add Food</Link>
         </div>
 
         <div className="section">
           <h3>Manage Users</h3>
           <Link to="/admin/employees">View Employees</Link>
           <Link to="/admin/signup">Add an Employee</Link>
+        </div>
+
+        {/* New Discount Code Management Section */}
+        <div className="section">
+          <h3>Manage Discount Codes</h3>
+          <Link to="/admin/discounts">View Discount Codes</Link>
+          <Link to="/admin/adddiscounts">Add Discount Code</Link>
         </div>
       </div>
     </div>

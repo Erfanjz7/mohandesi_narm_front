@@ -101,37 +101,6 @@ const FoodEdit = () => {
       console.error("Error:", err.response ? err.response.data : err.message);
     }
   };
-  
-  
-  // Function to send the data
-  const saveData = async (imageBase64) => {
-    const data = {
-      name: food.name,
-      description: food.description,
-      price: food.price,
-      rate: food.rate,
-      category: food.category, // Send selected category id
-      image: imageBase64, // Add the Base64 string as image
-    };
-  
-    try {
-      const response = await Axios.put(
-        `http://127.0.0.1:8000/api/admin/food/${foodid}/edit/`,
-        data,
-        {
-          headers: {
-            Authorization: `Token ${token}`,
-            "Content-Type": "application/json", // Send as JSON
-          },
-        }
-      );
-      alert("Food updated successfully");
-      navigate(`/foods`);
-    } catch (err) {
-      setError("Failed to update food.");
-      console.error("Error:", err.response ? err.response.data : err.message);
-    }
-  };
 
   const handleDelete = async () => {
     try {
@@ -155,85 +124,87 @@ const FoodEdit = () => {
     <div className="food-edit-container">
       <h2>Edit Food: {food.name}</h2>
       <form onSubmit={handleSave}>
-        <div className="form-group">
-          <label htmlFor="name">Food Name</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={food.name}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="description">Description</label>
-          <textarea
-            id="description"
-            name="description"
-            value={food.description}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="price">Price</label>
-          <input
-            type="number"
-            id="price"
-            name="price"
-            value={food.price}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="rate">Rate</label>
-          <input
-            type="number"
-            id="rate"
-            name="rate"
-            value={food.rate}
-            onChange={handleChange}
-            min="0"
-            max="5"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Current Image</label>
-          <img
-            src={`http://127.0.0.1:8000${food.image}`}
-            alt={food.name}
-            className="food-image-preview"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="image">Change Image</label>
-          <input
-            type="file"
-            id="image"
-            name="image"
-            onChange={handleImageChange}
-            accept="image/*"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="category">Category</label>
-          <select
-            id="category"
-            name="category"
-            value={food.category}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select Category</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
+        <div className="form-container">
+          <div className="form-group">
+            <label htmlFor="name">Food Name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={food.name}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="description">Description</label>
+            <textarea
+              id="description"
+              name="description"
+              value={food.description}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="price">Price</label>
+            <input
+              type="number"
+              id="price"
+              name="price"
+              value={food.price}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="rate">Rate</label>
+            <input
+              type="number"
+              id="rate"
+              name="rate"
+              value={food.rate}
+              onChange={handleChange}
+              min="0"
+              max="5"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Current Image</label>
+            <img
+              src={`http://127.0.0.1:8000${food.image}`}
+              alt={food.name}
+              className="food-image-preview"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="image">Change Image</label>
+            <input
+              type="file"
+              id="image"
+              name="image"
+              onChange={handleImageChange}
+              accept="image/*"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="category">Category</label>
+            <select
+              id="category"
+              name="category"
+              value={food.category}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Select Category</option>
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
         <div className="form-actions">
           <button type="submit">Save Changes</button>
