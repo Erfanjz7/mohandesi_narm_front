@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import Axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../style/OrdersPage.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 
 const OrdersPage = () => {
   const [orders, setOrders] = useState([]);
@@ -27,7 +29,7 @@ const OrdersPage = () => {
           params: { page: page },
         });
 
-        setOrders(response.data.data || []); // Ensure `data` exists
+        setOrders(response.data.data || []);
         setTotalPages(response.data.total_pages || 1);
         setLoading(false);
       } catch (err) {
@@ -47,6 +49,49 @@ const OrdersPage = () => {
 
   const goToOrderDetail = (orderId) => {
     navigate(`/customer/order-detail/${orderId}`);
+  };
+
+  const handleCancelOrder = async (orderId) => {
+    const token = localStorage.getItem("authToken");
+
+    if (!token) {
+      alert("Unauthorized! Please login again.");
+      return;
+    }
+
+    try {
+      await Axios.post(
+        "http://127.0.0.1:8000/api/cancelorder/",
+        { order_id: orderId },
+        { headers: { Authorization: `Token ${token}` } }
+      );
+      
+      alert("Order cancelled successfully!");
+      
+      // Update order status in UI
+      setOrders((prevOrders) => prevOrders.map(order =>
+        order.id === orderId ? { ...order, status: "cancelled" } : order
+      ));
+    } catch (error) {
+      alert("Failed to cancel the order. Please try again.");
+    }
+  };
+
+  const isCancellable = (order) => {
+    if (order.status.toLowerCase() !== "pending") return false;
+
+    // Ensure order_date is correctly formatted
+    const orderTime = new Date(order.created_at);
+    const currentTime = new Date();
+
+    if (isNaN(orderTime.getTime())) {
+      console.error(`Invalid order date format for Order #${order.id}:`, order.created_at);
+      return false;
+    }
+
+    const diffMinutes = (currentTime - orderTime) / (1000 * 60); // Convert ms to minutes
+
+    return diffMinutes < 30;
   };
 
   return (
@@ -69,11 +114,7 @@ const OrdersPage = () => {
               <p>You have no orders yet.</p>
             ) : (
               orders.map((order) => (
-                <div
-                  key={order.id}
-                  className="order-card"
-                  onClick={() => goToOrderDetail(order.id)}
-                >
+                <div key={order.id} className="order-card">
                   <h3>Order #{order.id}</h3>
                   <p><strong>Customer Name:</strong> {order.customer_name}</p>
                   <p><strong>Date:</strong> {order.order_date}</p>
@@ -83,6 +124,17 @@ const OrdersPage = () => {
                     ? order.foods.map(food => food.name).join(", ") 
                     : "No items"}
                   </p>
+
+                  {/* Show cancel button if the order is pending and within 30 minutes */}
+                  {isCancellable(order) && (
+                    <button className="cancel-button" onClick={() => handleCancelOrder(order.id)}>
+                      <FontAwesomeIcon icon={faTimesCircle} /> Cancel Order
+                    </button>
+                  )}
+
+                  <button className="details-button" onClick={() => goToOrderDetail(order.id)}>
+                    View Details
+                  </button>
                 </div>
               ))
             )}

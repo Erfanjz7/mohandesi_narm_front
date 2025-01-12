@@ -1,99 +1,130 @@
-/* Global Styles */
-body {
-  font-family: 'Roboto', Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background: linear-gradient(to bottom, #f5f5f5, #eaeaea);
-  color: #333;
-}
 
-/* Orders Page Container */
-.orders-page {
-  max-width: 1200px;
-  margin: 20px auto;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  max-height: 90vh;
-}
 
-.orders-page h1 {
-  text-align: center;
-  font-size: 2rem;
-  margin-bottom: 20px;
-  color: #007bff;
-}
-
-/* Orders List */
-.orders-list {
+.navbar {
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px; /* Spacing between order cards */
-  justify-content: center;
-}
-
-.order-card {
+  justify-content: space-between;
+  align-items: center;
   background-color: #f8f9fa;
-  border: 1px solid #dee2e6;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 300px;
   padding: 15px;
-  text-align: center;
-  transition: transform 0.3s ease;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.order-card:hover {
-  transform: scale(1.05);
+.navbar h2 {
+  margin: 0;
+  color: #e44d26;
 }
 
-.order-card h3 {
-  font-size: 1.5rem;
-  color: #343a40;
-  margin-bottom: 10px;
+.navbar button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-.order-card p {
-  font-size: 1rem;
-  color: #495057;
-  margin: 5px 0;
+
+
+
+.details-button {
+  width: 100%;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 5px;
 }
 
-/* Pagination Controls */
 .pagination {
   display: flex;
   justify-content: center;
-  align-items: center;
   margin-top: 20px;
 }
 
 .pagination button {
   background-color: #007bff;
   color: white;
+  padding: 8px 12px;
   border: none;
-  padding: 10px 20px;
-  font-size: 1rem;
   border-radius: 5px;
   cursor: pointer;
-  margin: 0 10px;
-}
-
-.pagination button:disabled {
-  background-color: #6c757d;
-  cursor: not-allowed;
+  margin: 0 5px;
 }
 
 .pagination span {
-  font-size: 1rem;
-  color: #333;
+  align-self: center;
 }
 
-/* Loading and Error Messages */
-.loading,
-.error {
-  text-align: center;
-  font-size: 1.5rem;
-  color: #dc3545;
-  margin: 20px 0;
+
+
+
+
+
+
+
+
+.orders-page {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.orders-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  width: 100%;
+  padding: 20px;
+  overflow-y: auto; /* Enables scrolling when there are many orders */
+  max-height: 80vh;
+}
+
+.order-card {
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: left;
+  transition: transform 0.3s;
+}
+
+.order-card:hover {
+  transform: scale(1.05);
+}
+
+.cancel-button {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 14px;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.cancel-button:hover {
+  background-color: darkred;
+}
+
+.view-button {
+  background-color: blue;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 5px;
 }

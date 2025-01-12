@@ -108,7 +108,7 @@ const handleAddressChange = (event) => {
       { headers: { Authorization: `Token ${token}` } }
     )
       .then((response) => {
-        if (response.data.valid) {
+        if (response.status === 200) {
           const discountValue = response.data.discount_percent;
           const discountAmount = (totalPrice * discountValue) / 100;
           setDiscountAmount(discountAmount);
@@ -126,31 +126,36 @@ const handleAddressChange = (event) => {
   };
 
   const handleSubmit = () => {
-    if (discountApplied) {
-      alert("Your discount has been applied. Please review your new total before submitting.");
-      return;
-    }
-
     let finalAddress = useNewAddress ? newAddress : selectedAddress;
-
+  
     if (!finalAddress) {
       alert("Please select or enter a delivery address.");
       return;
     }
-
+  
     const token = localStorage.getItem("authToken");
     if (!token) {
       alert("You must be logged in to submit the cart.");
       return;
     }
-
+  
+    if (!discountApplied && discountCode) {
+      alert("You entered a discount code but haven't applied it yet.");
+      return;
+    }
+  
     const orderData = {
       cart_items: cart,
       total_price: totalPrice - discountAmount,
       address: finalAddress,
-      discount_code: discountCode,
+      discount_code: discountApplied ? discountCode : null,
     };
 
+    // console.log(totalPrice)
+    // console.log(discountAmount)
+    // console.log(totalPrice - discountAmount)
+    // console.log(orderData)
+  
     Axios.post("http://127.0.0.1:8000/api/createorder/", orderData, {
       headers: { Authorization: `Token ${token}` },
     })
@@ -162,6 +167,7 @@ const handleAddressChange = (event) => {
         alert("Failed to submit the order. Please try again.");
       });
   };
+  
 
   return (
     <div className="cart-page">
