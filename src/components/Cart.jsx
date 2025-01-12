@@ -229,7 +229,19 @@ const handleAddressChange = (event) => {
           ))}
           <option value="new">Add New Address</option>
         </select>
+
+        {/* ✅ Show input field when "Add New Address" is selected */}
+        {useNewAddress && (
+          <input
+            type="text"
+            placeholder="Enter new address"
+            value={newAddress}
+            onChange={(e) => setNewAddress(e.target.value)}
+            className="new-address-input"
+          />
+        )}
       </div>
+
 
       <div className="submit-order">
         <button onClick={handleSubmit}>Submit Order</button>
