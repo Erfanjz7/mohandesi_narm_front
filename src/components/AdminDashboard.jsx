@@ -47,7 +47,7 @@ const AdminDashboard = () => {
         <div className="section">
           <h3>Sales & Revenue</h3>
           <Link to="/admin/most-sold-foods">See Most Sold Foods</Link>
-          <Link to="/admin/restaurant-income">See Restaurant Income</Link>
+          <Link to="/admin/restaurant-revenue">See Restaurant Income</Link>
         </div>
       </div>
     </div>

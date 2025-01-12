@@ -1,0 +1,55 @@
+.restaurant-revenue {
+    padding: 20px;
+    text-align: center;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+  }
+  
+  .date-selection {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .date-selection label {
+    font-weight: bold;
+  }
+  
+  .date-selection input {
+    padding: 5px;
+  }
+  
+  .date-selection button {
+    background-color: #28a745;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .orders-table {
+    margin-top: 20px;
+    overflow-x: auto;
+  }
+  
+  .orders-table table {
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: collapse;
+  }
+  
+  .orders-table th, .orders-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+  }
+  
+  .orders-table th {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .orders-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  

@@ -23,6 +23,7 @@ import MostSoldFoods from "./components/MostSoldFoods";
 import OrderDetailPage from "./components/OrderDetailPage";
 import OrdersPage from "./components/OrdersPage";
 import Welcome from "./components/Welcome";
+import RestaurantRevenue from "./components/RestaurantRevenue";
 import "./App.css";
 
 
@@ -237,6 +238,7 @@ const App = () => {
       <Route path="/customer/orders" element={<OrdersPage />} />
       <Route path="customer/order-detail/:id" element={<OrderDetailPage />} />
       <Route path="/admin/most-sold-foods" element={<MostSoldFoods />} />
+      <Route path="/admin/restaurant-revenue" element={<RestaurantRevenue />} />
     </Routes>
   );
 };
