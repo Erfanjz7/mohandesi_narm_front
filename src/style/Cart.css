@@ -82,6 +82,48 @@
   margin: 20px 0;
 }
 
+/* Discount Section */
+.discount-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.discount-section input {
+  width: 70%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #f9f9f9;
+  text-align: center;
+}
+
+.discount-section button {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.discount-section button:hover {
+  background: #0056b3;
+}
+
+.discount-message {
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #d9534f;
+}
+
 /* Address Selection */
 .address-selection {
   display: flex;

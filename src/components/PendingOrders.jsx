@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Axios from "axios";
-import { useNavigate } from "react-router-dom";
 import "../style/EmployeeOrders.css";
 
 const PendingOrders = () => {
@@ -9,7 +8,6 @@ const PendingOrders = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchOrders = async (page) => {
@@ -23,18 +21,13 @@ const PendingOrders = () => {
         }
 
         const response = await Axios.get("http://127.0.0.1:8000/api/employee/orders/pending", {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-          params: {
-            size: 10,
-            page,
-          },
+          headers: { Authorization: `Token ${token}` },
+          params: { size: 10, page },
         });
 
-        setOrders(response.data.data); // Set the orders for the current page
-        setCurrentPage(response.data.page); // Set the current page
-        setTotalPages(response.data.total_pages); // Set the total number of pages
+        setOrders(response.data.data);
+        setCurrentPage(response.data.page);
+        setTotalPages(response.data.total_pages);
         setLoading(false);
       } catch (err) {
         setError("Failed to load orders.");
@@ -59,9 +52,7 @@ const PendingOrders = () => {
         `http://127.0.0.1:8000/api/employee/orders/accept/${orderId}/`,
         { status: "ACCEPTED" },
         {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
+          headers: { Authorization: `Token ${token}` },
         }
       );
 
@@ -90,9 +81,10 @@ const PendingOrders = () => {
       <table>
         <thead>
           <tr>
-            <th>ID</th>
             <th>Customer</th>
-            <th>Address</th>
+            <th>Items Count</th>
+            <th>Total Price</th>
+            <th>Discount Code</th>
             <th>Order Date</th>
             <th>Actions</th>
           </tr>
@@ -100,9 +92,10 @@ const PendingOrders = () => {
         <tbody>
           {orders.map((order) => (
             <tr key={order.id}>
-              <td>{order.id}</td>
-              <td>{order.customer}</td>
-              <td>{order.address}</td>
+              <td>{order.customer_name}</td>
+              <td>{order.foods.length}</td>
+              <td>${order.total_price}</td>
+              <td>{order.discount_code ? order.discount_code : "N/A"}</td>
               <td>{order.order_date}</td>
               <td>
                 <button onClick={() => handleAcceptOrder(order.id)}>Accept</button>

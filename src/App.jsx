@@ -10,6 +10,7 @@ import CustomerDashboard from "./components/CustomerDashboard";
 import CustomerAddress from "./components/CustomerAddress";
 import DiscountCodes from "./components/DiscountCodes";
 import Foods from "./components/Foods";
+import FoodDetailPage from "./components/FoodDetailPage";
 import FoodEdit from "./components/FoodEdit";
 import AdminSignup from "./components/AdminSignup";
 import EmployeeList from "./components/EmployeeList";
@@ -18,6 +19,7 @@ import PendingOrders from "./components/PendingOrders";
 import AcceptedOrders from "./components/AcceptedOrders";
 import FoodAdd from "./components/FoodAdd";
 import Cart from "./components/Cart";
+import OrderDetailPage from "./components/OrderDetailPage";
 import OrdersPage from "./components/OrdersPage";
 import Welcome from "./components/Welcome";
 import "./App.css";
@@ -221,6 +223,7 @@ const App = () => {
       <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
       <Route path="/customer-dashboard" element={<CustomerDashboard />} />
       <Route path="/customer/addresses" element={<CustomerAddress />} />  {/* New Route */}
+      <Route path="/food/detail/:foodId" element={<FoodDetailPage />} />
       <Route path="/foods" element={<Foods />} />
       <Route path="/foods/food/edit/:foodid" element={<FoodEdit />} />
       <Route path="/admin/employees" element={<EmployeeList />} />
@@ -231,6 +234,7 @@ const App = () => {
       <Route path="/admin/foods/add" element={<FoodAdd />} />
       <Route path="/customer/cart" element={<Cart />} />
       <Route path="/customer/orders" element={<OrdersPage />} />
+      <Route path="customer/order-detail/:id" element={<OrderDetailPage />} />
     </Routes>
   );
 };

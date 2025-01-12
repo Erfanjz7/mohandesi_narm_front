@@ -11,7 +11,6 @@ const OrdersPage = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  // Fetch orders
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -24,18 +23,12 @@ const OrdersPage = () => {
         }
 
         const response = await Axios.get("http://127.0.0.1:8000/api/orders/", {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-          params: {
-            page: page,
-            
-          },
+          headers: { Authorization: `Token ${token}` },
+          params: { page: page },
         });
 
-        // Update state with the fetched data
-        setOrders(response.data.data);
-        setTotalPages(response.data.total_pages);
+        setOrders(response.data.data || []); // Ensure `data` exists
+        setTotalPages(response.data.total_pages || 1);
         setLoading(false);
       } catch (err) {
         setError("Failed to load orders.");
@@ -46,47 +39,67 @@ const OrdersPage = () => {
     fetchOrders();
   }, [page]);
 
-  // Handle page change
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setPage(newPage);
     }
   };
 
-  if (loading) return <div className="loading">Loading...</div>;
-  if (error) return <div className="error">{error}</div>;
+  const goToOrderDetail = (orderId) => {
+    navigate(`/customer/order-detail/${orderId}`);
+  };
 
   return (
     <div className="orders-page">
-      <h1>Your Orders</h1>
+      {/* Navbar */}
+      <div className="navbar">
+        <h2>Your Orders</h2>
+        <button onClick={() => navigate(`/customer-dashboard`)}>Back</button>
+      </div>
+
+      {/* Loading and Error Handling */}
+      {loading && <div className="loading">Loading...</div>}
+      {error && <div className="error">{error}</div>}
 
       {/* Orders List */}
-      <div className="orders-list">
-        {orders.length === 0 ? (
-          <p>You have no orders yet.</p>
-        ) : (
-          orders.map((order) => (
-            <div key={order.id} className="order-card">
-              <h3>Order #{order.id}</h3>
-              <p>Date: {order.order_date}</p>
-              <p>Status: {order.status}</p>
-              <p>Address: {order.address}</p>
-              <p>Items: {order.items.join(", ")}</p>
-            </div>
-          ))
-        )}
-      </div>
+      {!loading && !error && (
+        <>
+          <div className="orders-list">
+            {orders.length === 0 ? (
+              <p>You have no orders yet.</p>
+            ) : (
+              orders.map((order) => (
+                <div
+                  key={order.id}
+                  className="order-card"
+                  onClick={() => goToOrderDetail(order.id)}
+                >
+                  <h3>Order #{order.id}</h3>
+                  <p><strong>Customer Name:</strong> {order.customer_name}</p>
+                  <p><strong>Date:</strong> {order.order_date}</p>
+                  <p><strong>Status:</strong> {order.status}</p>
+                  <p><strong>Total Price:</strong> {parseFloat(order.total_price).toFixed(2)} IRR</p>
+                  <p><strong>Items:</strong> {order.foods && order.foods.length > 0 
+                    ? order.foods.map(food => food.name).join(", ") 
+                    : "No items"}
+                  </p>
+                </div>
+              ))
+            )}
+          </div>
 
-      {/* Pagination Controls */}
-      <div className="pagination">
-        <button onClick={() => handlePageChange(page - 1)} disabled={page <= 1}>
-          Previous
-        </button>
-        <span>Page {page} of {totalPages}</span>
-        <button onClick={() => handlePageChange(page + 1)} disabled={page >= totalPages}>
-          Next
-        </button>
-      </div>
+          {/* Pagination Controls */}
+          <div className="pagination">
+            <button onClick={() => handlePageChange(page - 1)} disabled={page <= 1}>
+              Previous
+            </button>
+            <span>Page {page} of {totalPages}</span>
+            <button onClick={() => handlePageChange(page + 1)} disabled={page >= totalPages}>
+              Next
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 };

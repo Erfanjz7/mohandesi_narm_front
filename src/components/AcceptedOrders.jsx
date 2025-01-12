@@ -21,18 +21,13 @@ const AcceptedOrders = () => {
         }
 
         const response = await Axios.get("http://127.0.0.1:8000/api/employee/orders/accepted", {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-          params: {
-            size: 10,
-            page,
-          },
+          headers: { Authorization: `Token ${token}` },
+          params: { size: 10, page },
         });
 
-        setOrders(response.data.data); // Set the orders for the current page
-        setCurrentPage(response.data.page); // Set the current page
-        setTotalPages(response.data.total_pages); // Set the total number of pages
+        setOrders(response.data.data);
+        setCurrentPage(response.data.page);
+        setTotalPages(response.data.total_pages);
         setLoading(false);
       } catch (err) {
         setError("Failed to load orders.");
@@ -58,18 +53,20 @@ const AcceptedOrders = () => {
       <table>
         <thead>
           <tr>
-            <th>ID</th>
             <th>Customer</th>
-            <th>Address</th>
+            <th>Items Count</th>
+            <th>Total Price</th>
+            <th>Discount Code</th>
             <th>Order Date</th>
           </tr>
         </thead>
         <tbody>
           {orders.map((order) => (
             <tr key={order.id}>
-              <td>{order.id}</td>
-              <td>{order.customer}</td>
-              <td>{order.address}</td>
+              <td>{order.customer_name}</td>
+              <td>{order.foods.length}</td>
+              <td>${order.total_price}</td>
+              <td>{order.discount_code ? order.discount_code : "N/A"}</td>
               <td>{order.order_date}</td>
             </tr>
           ))}

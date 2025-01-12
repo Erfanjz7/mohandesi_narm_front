@@ -6,10 +6,14 @@ import "../style/Cart.css";
 const Cart = () => {
   const [cart, setCart] = useState([]);
   const [storedAddresses, setStoredAddresses] = useState([]);
-  const [selectedAddress, setSelectedAddress] = useState(""); 
+  const [selectedAddress, setSelectedAddress] = useState("");
   const [newAddress, setNewAddress] = useState("");
   const [useNewAddress, setUseNewAddress] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [discountCode, setDiscountCode] = useState("");
+  const [discountAmount, setDiscountAmount] = useState(0);
+  const [discountMessage, setDiscountMessage] = useState("");
+  const [discountApplied, setDiscountApplied] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,7 +21,6 @@ const Cart = () => {
     fetchStoredAddresses();
   }, []);
 
-  // Fetch cart items
   const fetchCart = () => {
     const token = localStorage.getItem("authToken");
     if (token) {
@@ -36,7 +39,20 @@ const Cart = () => {
     }
   };
 
-  // Fetch stored addresses
+  // Handle address selection
+const handleAddressChange = (event) => {
+  const selected = event.target.value;
+  if (selected === "new") {
+    setUseNewAddress(true);
+    setSelectedAddress("");
+  } else {
+    setUseNewAddress(false);
+    setSelectedAddress(selected);
+    setNewAddress("");
+  }
+};
+
+
   const fetchStoredAddresses = () => {
     const token = localStorage.getItem("authToken");
     if (token) {
@@ -56,7 +72,6 @@ const Cart = () => {
     }
   };
 
-  // Handle quantity change
   const handleQuantityChange = (item, action) => {
     const token = localStorage.getItem("authToken");
 
@@ -77,28 +92,45 @@ const Cart = () => {
     }
   };
 
-  // Handle address selection
-  const handleAddressChange = (event) => {
-    const selected = event.target.value;
-    if (selected === "new") {
-      setUseNewAddress(true);
-      setSelectedAddress("");
-    } else {
-      setUseNewAddress(false);
-      setSelectedAddress(selected);
-      setNewAddress(""); // Clear new address input if a stored address is selected
+  const applyDiscount = () => {
+    setDiscountMessage("");
+    setDiscountApplied(false);
+    const token = localStorage.getItem("authToken");
+
+    if (!token) {
+      setDiscountMessage("You must be logged in to apply a discount.");
+      return;
     }
+
+    Axios.post(
+      "http://127.0.0.1:8000/api/checkdiscountcode/",
+      { code: discountCode },
+      { headers: { Authorization: `Token ${token}` } }
+    )
+      .then((response) => {
+        if (response.data.valid) {
+          const discountValue = response.data.discount_percent;
+          const discountAmount = (totalPrice * discountValue) / 100;
+          setDiscountAmount(discountAmount);
+          setDiscountApplied(true);
+          setDiscountMessage(`Discount applied: -${discountValue}%`);
+        } else {
+          setDiscountAmount(0);
+          setDiscountApplied(false);
+          setDiscountMessage("Invalid discount code. Please try again.");
+        }
+      })
+      .catch(() => {
+        setDiscountMessage("Error applying discount. Please try again.");
+      });
   };
 
-  // Handle discard selected address
-  const handleDiscardAddress = () => {
-    setSelectedAddress("");
-    setUseNewAddress(false);
-    setNewAddress("");
-  };
-
-  // Handle order submission
   const handleSubmit = () => {
+    if (discountApplied) {
+      alert("Your discount has been applied. Please review your new total before submitting.");
+      return;
+    }
+
     let finalAddress = useNewAddress ? newAddress : selectedAddress;
 
     if (!finalAddress) {
@@ -114,8 +146,9 @@ const Cart = () => {
 
     const orderData = {
       cart_items: cart,
-      total_price: totalPrice,
+      total_price: totalPrice - discountAmount,
       address: finalAddress,
+      discount_code: discountCode,
     };
 
     Axios.post("http://127.0.0.1:8000/api/createorder/", orderData, {
@@ -156,10 +189,31 @@ const Cart = () => {
       </div>
 
       <div className="cart-total">
-        <h3>Total Price: {totalPrice.toFixed(2)} IRR</h3>
+        {discountAmount > 0 ? (
+          <div>
+            <h3 style={{ textDecoration: "line-through", color: "red" }}>
+              Previous Price: {totalPrice.toFixed(2)} IRR
+            </h3>
+            <h3 style={{ color: "green", fontSize: "1.5em" }}>
+              Discounted Price: {(totalPrice - discountAmount).toFixed(2)} IRR
+            </h3>
+          </div>
+        ) : (
+          <h3>Total Price: {totalPrice.toFixed(2)} IRR</h3>
+        )}
       </div>
 
-      {/* Address Selection */}
+      <div className="discount-section">
+        <input
+          type="text"
+          placeholder="Enter discount code"
+          value={discountCode}
+          onChange={(e) => setDiscountCode(e.target.value)}
+        />
+        <button onClick={applyDiscount}>Apply Discount</button>
+        {discountMessage && <p className="discount-message">{discountMessage}</p>}
+      </div>
+
       <div className="address-selection">
         <label htmlFor="address">Select Address:</label>
         <select id="address" value={useNewAddress ? "new" : selectedAddress} onChange={handleAddressChange}>
@@ -169,29 +223,8 @@ const Cart = () => {
           ))}
           <option value="new">Add New Address</option>
         </select>
-
-        {/* Discard selected address */}
-        {selectedAddress && !useNewAddress && (
-          <button className="discard-btn" onClick={handleDiscardAddress}>
-            ❌ Discard Address
-          </button>
-        )}
       </div>
 
-      {/* New Address Input */}
-      {useNewAddress && (
-        <div className="address-field">
-          <label htmlFor="newAddress">Enter New Address:</label>
-          <textarea
-            id="newAddress"
-            value={newAddress}
-            onChange={(e) => setNewAddress(e.target.value)}
-            placeholder="Enter new delivery address"
-          ></textarea>
-        </div>
-      )}
-
-      {/* Submit Button */}
       <div className="submit-order">
         <button onClick={handleSubmit}>Submit Order</button>
       </div>

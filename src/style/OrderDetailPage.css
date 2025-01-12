@@ -1,0 +1,54 @@
+.order-detail-page {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+  
+  .order-detail-page h1 {
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .order-detail-page p {
+    font-size: 16px;
+    color: #555;
+    margin: 8px 0;
+  }
+  
+  .order-detail-page h3 {
+    margin-top: 20px;
+    color: #222;
+  }
+  
+  .order-detail-page ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .order-detail-page li {
+    background: #f9f9f9;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+  }
+  
+  .order-detail-page button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 20px;
+  }
+  
+  .order-detail-page button:hover {
+    background: #0056b3;
+  }
+  
